@@ -364,7 +364,7 @@ module Google
                 #   @param options [::Gapic::CallOptions, ::Hash]
                 #     Overrides the default settings for this call, e.g, timeout, retries, etc. Optional.
                 #
-                # @overload create_database(parent: nil, create_statement: nil, extra_statements: nil)
+                # @overload create_database(parent: nil, create_statement: nil, extra_statements: nil, encryption_config: nil)
                 #   Pass arguments to `create_database` via keyword arguments. Note that at
                 #   least one keyword argument is required. To specify no parameters, or to keep all
                 #   the default parameter values, pass an empty Hash as a request object (see above).
@@ -383,6 +383,8 @@ module Google
                 #     database. Statements can create tables, indexes, etc. These
                 #     statements execute atomically with the creation of the database:
                 #     if there is an error in any statement, the database is not created.
+                #   @param encryption_config [::Google::Cloud::Spanner::Admin::Database::V1::EncryptionConfig, ::Hash]
+                #     Optional.
                 #
                 # @yield [response, operation] Access the result along with the RPC operation
                 # @yieldparam response [::Gapic::Operation]
@@ -988,7 +990,7 @@ module Google
                 #   @param options [::Gapic::CallOptions, ::Hash]
                 #     Overrides the default settings for this call, e.g, timeout, retries, etc. Optional.
                 #
-                # @overload create_backup(parent: nil, backup_id: nil, backup: nil)
+                # @overload create_backup(parent: nil, backup_id: nil, backup: nil, encryption_config: nil)
                 #   Pass arguments to `create_backup` via keyword arguments. Note that at
                 #   least one keyword argument is required. To specify no parameters, or to keep all
                 #   the default parameter values, pass an empty Hash as a request object (see above).
@@ -1006,6 +1008,13 @@ module Google
                 #     `projects/<project>/instances/<instance>/backups/<backup_id>`.
                 #   @param backup [::Google::Cloud::Spanner::Admin::Database::V1::Backup, ::Hash]
                 #     Required. The backup to create.
+                #   @param encryption_config [::Google::Cloud::Spanner::Admin::Database::V1::CreateBackupEncryptionConfig, ::Hash]
+                #     Optional. An encryption configuration describing the encryption type and key
+                #     resources in Cloud KMS used to encrypt the backup. If no
+                #     `encryption_config` is specified, the backup will use the same
+                #     encryption configuration as the database by default, namely
+                #     {::Google::Cloud::Spanner::Admin::Database::V1::CreateBackupEncryptionConfig#encryption_type encryption_type} =
+                #     USE_DATABASE_ENCRYPTION.
                 #
                 # @yield [response, operation] Access the result along with the RPC operation
                 # @yieldparam response [::Gapic::Operation]
@@ -1406,7 +1415,7 @@ module Google
                 #   @param options [::Gapic::CallOptions, ::Hash]
                 #     Overrides the default settings for this call, e.g, timeout, retries, etc. Optional.
                 #
-                # @overload restore_database(parent: nil, database_id: nil, backup: nil)
+                # @overload restore_database(parent: nil, database_id: nil, backup: nil, encryption_config: nil)
                 #   Pass arguments to `restore_database` via keyword arguments. Note that at
                 #   least one keyword argument is required. To specify no parameters, or to keep all
                 #   the default parameter values, pass an empty Hash as a request object (see above).
@@ -1425,6 +1434,14 @@ module Google
                 #   @param backup [::String]
                 #     Name of the backup from which to restore.  Values are of the form
                 #     `projects/<project>/instances/<instance>/backups/<backup>`.
+                #   @param encryption_config [::Google::Cloud::Spanner::Admin::Database::V1::RestoreDatabaseEncryptionConfig, ::Hash]
+                #     Optional. An encryption configuration describing the encryption type and key
+                #     resources in Cloud KMS used to encrypt/decrypt the database to restore to.
+                #     If no `encryption_config` is specified, the restored database will use
+                #     the config default (if set) or the same encryption configuration as
+                #     the backup by default, namely
+                #     {::Google::Cloud::Spanner::Admin::Database::V1::RestoreDatabaseEncryptionConfig#encryption_type encryption_type} =
+                #     USE_CONFIG_DEFAULT_OR_DATABASE_ENCRYPTION.
                 #
                 # @yield [response, operation] Access the result along with the RPC operation
                 # @yieldparam response [::Gapic::Operation]

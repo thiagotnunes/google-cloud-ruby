@@ -75,6 +75,11 @@ module Google
             #     any referencing database prevents the backup from being deleted. When a
             #     restored database from the backup enters the `READY` state, the reference
             #     to the backup is removed.
+            # @!attribute [r] encryption_info
+            #   @return [::Google::Cloud::Spanner::Admin::Database::V1::EncryptionInfo]
+            #     Output only. The encryption information for the backup.
+            #     If the encryption key protecting this resource is customer managed, then
+            #     kms_key_version will be filled.
             class Backup
               include ::Google::Protobuf::MessageExts
               extend ::Google::Protobuf::MessageExts::ClassMethods
@@ -110,6 +115,14 @@ module Google
             # @!attribute [rw] backup
             #   @return [::Google::Cloud::Spanner::Admin::Database::V1::Backup]
             #     Required. The backup to create.
+            # @!attribute [rw] encryption_config
+            #   @return [::Google::Cloud::Spanner::Admin::Database::V1::CreateBackupEncryptionConfig]
+            #     Optional. An encryption configuration describing the encryption type and key
+            #     resources in Cloud KMS used to encrypt the backup. If no
+            #     `encryption_config` is specified, the backup will use the same
+            #     encryption configuration as the database by default, namely
+            #     {::Google::Cloud::Spanner::Admin::Database::V1::CreateBackupEncryptionConfig#encryption_type encryption_type} =
+            #     USE_DATABASE_ENCRYPTION.
             class CreateBackupRequest
               include ::Google::Protobuf::MessageExts
               extend ::Google::Protobuf::MessageExts::ClassMethods
@@ -355,6 +368,44 @@ module Google
             class BackupInfo
               include ::Google::Protobuf::MessageExts
               extend ::Google::Protobuf::MessageExts::ClassMethods
+            end
+
+            # Encryption configuration for the backup to create.
+            # @!attribute [rw] encryption_type
+            #   @return [::Google::Cloud::Spanner::Admin::Database::V1::CreateBackupEncryptionConfig::EncryptionType]
+            #     Required. The encryption type of the backup.
+            # @!attribute [rw] kms_key_name
+            #   @return [::String]
+            #     Optional. The resource name of the Cloud KMS key that will be used to
+            #     protect the backup. Once specified, the backup will enforce customer
+            #     managed encryption, regardless of the database encryption type.
+            #     This field should be set only when
+            #     {::Google::Cloud::Spanner::Admin::Database::V1::CreateBackupEncryptionConfig#encryption_type encryption_type} is
+            #     CUSTOMER_MANAGED_ENCRYPTION. Values are of the form
+            #     `projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`.
+            class CreateBackupEncryptionConfig
+              include ::Google::Protobuf::MessageExts
+              extend ::Google::Protobuf::MessageExts::ClassMethods
+
+              # Encryption types for the backup.
+              module EncryptionType
+                # Unspecified. Do not use.
+                ENCRYPTION_TYPE_UNSPECIFIED = 0
+
+                # Use the same encryption configuration as the database. This is the
+                # default option when
+                # [encryption_config][CreateBackupEncryptionConfig.encryption_config] is
+                # empty. If the database is using customer managed encryption, the
+                # backup will be using the same KMS key.
+                USE_DATABASE_ENCRYPTION = 1
+
+                # Enforce google default encryption.
+                GOOGLE_DEFAULT_ENCRYPTION = 2
+
+                # Enforce customer managed encryption. If specified, the kms_key_name
+                # must provide a valid Cloud KMS key name.
+                CUSTOMER_MANAGED_ENCRYPTION = 3
+              end
             end
           end
         end
